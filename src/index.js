@@ -1,10 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom'
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import YTSearch from 'youtube-api-search';
+import SearchBar from './components/search_bar';
+import VideoList from './components/video_list';
+
+// API key from Google to use API
+const API_KEY = 'AIzaSyBjEmYdKyD8VaavuLFJsCwr_pNAC2lt9PY';
 
 // Create a new component.
 // This component should produce some HTML
-const App = () => {
-	return <div>Hi!</div>;
+class App extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			videos: []	
+		};
+
+		// Example fetch
+		YTSearch({key: API_KEY, term: 'shooting stars'}, (videos) => {
+			this.setState({ videos }); // ES6 new way
+			// this.setState({ videos: videos }); // same as this 
+		});
+	}
+
+	render() {
+		return (
+			<div>
+				<SearchBar />
+				<VideoList videos={this.state.videos} />
+			</div>
+		);
+	}
 }
 
 // Take this component's generated HTML and put it
